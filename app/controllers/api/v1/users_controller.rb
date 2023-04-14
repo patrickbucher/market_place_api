@@ -29,8 +29,11 @@ class Api::V1::UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user.destroy
-    head 204
+    if @user.destroy
+      head 204
+    else
+      head :forbidden
+    end
   end
 
   private
@@ -45,6 +48,10 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def check_owner
-    head :forbidden unless @user.id == current_user&.id
+    if not current_user
+      head :forbidden
+    else
+      head :forbidden unless @user.id == current_user&.id
+    end
   end
 end

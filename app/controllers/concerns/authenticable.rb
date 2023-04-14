@@ -5,7 +5,11 @@ module Authenticable
     header = request.headers['Authorization']
     return nil if header.nil?
 
-    decoded = JsonWebToken.decode(header)
+    begin
+      decoded = JsonWebToken.decode(header)
+    rescue JWT::VerificationError
+      return nil
+    end
 
     @current_user = User.find(decoded[:user_id]) rescue ActiveRecord::RecordNotFound
   end
