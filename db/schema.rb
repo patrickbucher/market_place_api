@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_07_104951) do
+ActiveRecord::Schema.define(version: 2023_04_17_044856) do
+
+  create_table "products", force: :cascade do |t|
+    t.string "title"
+    t.decimal "price"
+    t.boolean "published"
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_products_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
@@ -20,4 +30,5 @@ ActiveRecord::Schema.define(version: 2023_04_07_104951) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "products", "users"
 end
